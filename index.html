@@ -78,41 +78,48 @@ transform: translateY(-10vh) scale(1.5);
 <script>
 // Runaway NO button
 const noBtn = document.getElementById("noBtn");
-// EXTRA PANIC MODE 😱
-noBtn.addEventListener("mouseover", panic);
-noBtn.addEventListener("mousemove", panic);
+// ULTRA PANIC MODE 😱🔥 — runs away BEFORE you can reach it
+const panicDistance = 120; // px distance from cursor
 
-function panic() {
-  const x = Math.random() * (window.innerWidth - 120);
-  const y = Math.random() * (window.innerHeight - 60);
-  noBtn.style.left = x + "px";
-  noBtn.style.top = y + "px";
-  noBtn.style.transition = "none";
-}
+document.addEventListener("mousemove", (e) => {
+  const rect = noBtn.getBoundingClientRect();
+  const btnCenterX = rect.left + rect.width / 2;
+  const btnCenterY = rect.top + rect.height / 2;
+
+  const dx = e.clientX - btnCenterX;
+  const dy = e.clientY - btnCenterY;
+  const distance = Math.sqrt(dx * dx + dy * dy);
+
+  if (distance < panicDistance) {
+    const x = Math.random() * (window.innerWidth - rect.width);
+    const y = Math.random() * (window.innerHeight - rect.height);
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+    noBtn.style.transition = "none";
+  }
+});
 
 // YES click celebration
 function yesClick() {
-document.body.innerHTML = `
-<h1 style="color:white;font-size:3rem;">YAYYY!!! 💖🥰</h1>
-<p style="color:white;font-size:1.8rem;">
-Best decision ever 😘<br>
-Happy Valentine’s Day 💕
-</p>
-`;
+  document.body.innerHTML = `
+    <h1 style="color:white;font-size:3rem;">YAYYY!!! 💖🥰</h1>
+    <p style="color:white;font-size:1.8rem;">
+      Best decision ever 😘<br>
+      Happy Valentine’s Day 💕
+    </p>
+  `;
 }
 
 // Floating hearts
 function createHeart() {
-const heart = document.createElement("div");
-heart.classList.add("heart");
-heart.innerHTML = "💖";
-heart.style.left = Math.random() * 100 + "vw";
-heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
-document.body.appendChild(heart);
+  const heart = document.createElement("div");
+  heart.classList.add("heart");
+  heart.innerHTML = "💖";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
+  document.body.appendChild(heart);
 
-setTimeout(() => {
-heart.remove();
-}, 6000);
+  setTimeout(() => heart.remove(), 6000);
 }
 
 setInterval(createHeart, 300);
@@ -120,3 +127,4 @@ setInterval(createHeart, 300);
 
 </body>
 </html>
+
